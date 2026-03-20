@@ -1,6 +1,5 @@
 import argparse
 import json
-import logging
 from os import getenv
 
 import boto3
@@ -8,12 +7,6 @@ from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
 load_dotenv()
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
-logger = logging.getLogger(__name__)
 
 
 def init_client():
@@ -64,9 +57,8 @@ def generate_public_read_policy(bucket_name):
 def remove_public_access_block(client, bucket_name):
     try:
         client.delete_public_access_block(Bucket=bucket_name)
-        logger.info("Removed public access block for '%s'", bucket_name)
     except ClientError as e:
-        logger.warning("Could not remove public access block: %s", e)
+        print(e)
 
 
 def create_bucket_policy(client, bucket_name):
